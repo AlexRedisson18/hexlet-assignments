@@ -31,6 +31,8 @@ class Url
   private
 
   def query_as_hash(query)
+    return '' unless query
+
     query.split('&').each_with_object({}) do |elem, acc|
       key, value = elem.split('=')
       acc.merge!({ key.to_sym => value })
