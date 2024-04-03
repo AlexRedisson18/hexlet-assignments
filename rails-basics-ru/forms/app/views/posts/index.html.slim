@@ -1,0 +1,12 @@
+h1 | Posts
+
+= link_to 'New post', new_post_path
+hr
+
+- @posts.each do |post|
+  p
+    = link_to(post.title, post_path(post.id))
+  small
+    = post.body
+    = post.created_at.in_time_zone('Moscow')
+  hr
