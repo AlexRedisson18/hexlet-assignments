@@ -9,9 +9,10 @@ class Signature
 
   def call(env)
     # BEGIN
+    p 'signature before'
     prev_response = @app.call(env)
+    p 'signature after'
     status, headers, prev_body = prev_response
-
     return prev_response if status != 200
 
     hash = Digest::SHA2.hexdigest prev_body.join
