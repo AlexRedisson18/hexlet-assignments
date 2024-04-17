@@ -4,14 +4,23 @@ require 'csv'
 require 'date'
 
 namespace :hexlet do
-  desc 'Import users from CSV file'
-  task :import_users, [:file_path] => :environment do |_t, args|
-    path = args[:file_path]
-    csv_text = File.read(path)
-    csv = CSV.parse(csv_text, headers: true)
+  desc 'Hexlet tasks'
 
+  task :import_users, %i[data_path] => :environment do |_task, args|
+    path = args[:data_path]
+
+    abort 'Data path is required!' unless path
+    puts path
+    abort 'Cant find data file!' unless File.exist?(path)
+
+    data = File.read(path)
+
+    csv = CSV.parse(data, headers: true)
     csv.each do |row|
-      User.create!(row.to_hash.merge(birthday: Date.today))
+      parsed_birthday = DateTime.strptime(row['birthday'], '%m/%d/%Y')
+      User.create!(row.to_hash.merge(birthday: parsed_birthday))
     end
+
+    puts 'Successfuly loaded!'
   end
 end
