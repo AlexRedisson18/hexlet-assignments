@@ -1,0 +1,34 @@
+= content_for :title do
+  = @post.title
+p
+  strong.me-2 = t('.author')
+  = @post.author.name
+p
+  strong.me-2 = t('.body')
+  = @post.body
+
+hr
+
+.d-flex
+  / BEGIN
+  - if policy(@post).update?
+    = link_to t('edit'), edit_post_path(@post), class: 'btn btn-outline-primary me-2'
+  - if policy(@post).destroy?
+    = link_to t('destroy'), @post, data: { turbo_confirm: t('destroy_confirmation'), turbo_method: :delete }, class: 'btn btn-outline-danger me-2'
+  / END
+  = link_to t('back'), :back, class: 'btn btn-outline-primary'
+
+
+/ app/views/posts/show.html.slim
+/ Добавьте на страницу кнопки для управления постами.
+/ Они должны отображаться для тех пользователей, у которых есть соответствующие права.
+/ Используйте созданную политику для проверки условия.
+
+<!-- # Использование политики в шаблоне
+# <% if policy(@post).update? %>
+#   <%= link_to "Edit post", edit_post_path(@post) %>
+# <% end %>
+
+# <% if policy(Post).new? %>
+#   <%= link_to "Create post", new_post_path %>
+# <% end %> -->
